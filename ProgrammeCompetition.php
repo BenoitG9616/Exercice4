@@ -38,23 +38,26 @@
     //B. Développer ET documenter la fonction pileOuFace dans Fonctions.php selon les règles qui y sont décrites.
 
     //C. Testez la fonction harveyScrabble, développée dans le fichier Fonctions.php. Vous devez remplacer la table HTML plus bas et en générer une qui contient le nombre de points correspondant pour chaque mot à tester dans le tableau suivant, en traversant le tableau avec une boucle.
-
+    
     $motsTest = ["véritable", "gravitas", "hydravion", "regarder", "coucou", "déjà"];
-?>
-<h1>Première partie - Les fonctions harveyScrabble et pileOuFace</h1>
-<h2>Test de la fonction harveyScrabble</h2>
-<table border='1'>
-    <tr>
-        <th>Mot</th><th>Valeur en points</th>
-    <tr>
-    <!-- à générer dynamiquement à partir du tableau $motsTest -->
-    <tr>
-        <td>véritable</td><td>?</td>
-    </tr>
-    <!-- fin -->
-</table>
-<h1>Test de la fonction pileOuFace</h1>
-<!-- C -- Test de la fonction pileOuFace -->
+    ?>
+    <h1>Première partie - Les fonctions harveyScrabble et pileOuFace</h1>
+    <h2>Test de la fonction harveyScrabble</h2>
+    <table border='1'>
+        <tr>
+            <th>Mot</th><th>Valeur en points</th>
+        </tr>
+        <!-- Générer dynamiquement à partir du tableau $motsTest -->
+        <?php foreach ($motsTest as $mot) : ?>
+            <tr>
+                <td><?= $mot ?></td>
+                <td><?= harveyScrabble($mot) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <!-- Fin -->
+    </table>
+    <h1>Test de la fonction pileOuFace</h1>
+    <!-- C -- Test de la fonction pileOuFace -->
 
 <h1>Deuxième partie - La Grande Compétition</h1>
 <?php 
@@ -65,67 +68,86 @@
 
     Les compétitions de HarveyScrabble sont très complexes et trop longues à expliquer, mais le calcul des points est très facile. À la fin du jeu, les deux joueurs en compétition ont chacun choisi 4 mots, un mot par ronde. Les deux tableaux suivants donnent un bon exemple du format des tableaux contenant les mots soumis par deux joueurs lors de ces 4 rondes.
 
-*/
+/**
+ * Compare deux mots et détermine le gagnant en fonction de leurs scores.
+ *
+ * @param string $motJoueur1 Le mot du joueur 1.
+ * @param string $motJoueur2 Le mot du joueur 2.
+ * @return string Le gagnant de la ronde ("Joueur 1", "Joueur 2" ou "Égalité").
+ */
+// Inclure le fichier contenant la fonction competition
+require_once("Fonctions.php");
+
+// Définir les tableaux de mots pour les deux joueurs
 $motsJoueurs1 = ["Ronde1" => "hydre", "Ronde2" => "psychonévrose", "Ronde3" => "solvant", "Ronde4" => "royal"];
 $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyperémotif", "Ronde4" => "regardé"];
 
+// Appeler la fonction competition avec les tableaux de mots des deux joueurs comme paramètres
+$resultatCompetition = competition($motsJoueurs1, $motsJoueurs2);
+
+// Afficher le résultat de la compétition
+echo "<h2>Résultat de la compétition</h2>";
+echo "<pre>$resultatCompetition</pre>";
 ?>
-<h2>Les mots du premier joueur</h2>
-<table border='1'>
-    <tr>
-        <th>Ronde 1</th><th>Ronde 2</th><th>Ronde 3</th><th>Ronde 4</th>
-    </tr> 
-    <tr>
-        <?php
-        //affichage des mots du premier joueur - ne pas modifier
-        foreach($motsJoueurs1 as $ronde => $mot)
-        {
-            echo "<td>$mot</td>";
-        }
-        ?>
-    </tr> 
-</table>
-<h2>Les mots du second joueur</h2>
-<table border='1'>
-    <tr>
-        <th>Ronde 1</th><th>Ronde 2</th><th>Ronde 3</th><th>Ronde 4</th>
-    </tr> 
-    <tr>
-        <?php
-        //affichage des mots du second joueur - ne pas modifier
-        foreach($motsJoueurs2 as $ronde => $mot)
-        {
-            echo "<td>$mot</td>";
-        }
-        ?>
-    </tr> 
-</table>
-<?php 
-    /*
 
-    Pour trouver le gagnant, on compare les deux tableaux ainsi :
+<?php
+require_once("Fonctions.php");
+ //Détermine le gagnant de la compétition entre deux joueurs.
+ //@param array $motsJoueurs1 Les mots soumis par le joueur 1.
+ //@param array $motsJoueurs2 Les mots soumis par le joueur 2.
+ //@return string La description du déroulement de la compétition et le nom du gagnant.
 
-    • Chaque mot soumis par un joueur dans une ronde est comparé contre le mot soumis par l’autre joueur dans la même ronde. Dans notre exemple, le mot hydre serait donc soumis contre le mot cheval.
+ // Initialisation des compteurs
+    $scoreJoueur1 = 0;
+    $scoreJoueur2 = 0;
+    $nbRondesGagneesJoueur1 = 0;
+    $nbRondesGagneesJoueur2 = 0;
+    $nbEgalites = 0;
 
-    • Dans notre exemple, selon les règles du HarveyScrabble, le mot hydre vaut 17 points (3 + 10 + 1 + 2 + 1) et le mot cheval vaut 12 points (1 + 3 + 1 + 5 + 1 + 1), et le joueur 1 gagnerait donc la première ronde.
-
-    • Si la ronde est nulle, on tire à pile ou face le gagnant de la ronde.
-
-    • Évidemment, le joueur ayant gagné le plus de rondes gagne la partie. Par contre, il est possible qu'il y ait égalité si chacun des joueurs gagne 2 rondes!
-
-    • S'il y a égalité après les quatre rondes, on lance un autre calcul : il faut trouver le nombre de fois que chaque joueur a utilisé les lettres H, R, V et Y (le total combiné de toutes les rondes). Le plus grand total gagne.  Je vous suggère d'utiliser la fonction substr_count, voir la documentation sur php.net!
+    // Comparaison des mots pour chaque ronde
+    foreach ($motsJoueurs1 as $ronde => $motJoueur1) {
+        $motJoueur2 = $motsJoueurs2[$ronde];
     
-    • S'il y a encore égalité, c’est un peu décevant, mais on annonce une égalité. Nous devrons donc départager avec un dernier lancer de pile ou face et annoncer le gagnant.
+        $gagnantRonde = comparerMots($motJoueur1, $motJoueur2);
+        if ($gagnantRonde == "Joueur 1") {
+            $scoreJoueur1++;
+            $nbRondesGagneesJoueur1++;
+        } elseif ($gagnantRonde == "Joueur 2") {
+            $scoreJoueur2++;
+            $nbRondesGagneesJoueur2++;
+        } else {
+            $nbEgalites++;
+        }
+    }
 
+    // Comparaison des lettres H, R, V et Y
+    $nbLettresJoueur1 = substr_count(implode($motsJoueurs1), 'h') + substr_count(implode($motsJoueurs1), 'r') + substr_count(implode($motsJoueurs1), 'v') + substr_count(implode($motsJoueurs1), 'y');
+    $nbLettresJoueur2 = substr_count(implode($motsJoueurs2), 'h') + substr_count(implode($motsJoueurs2), 'r') + substr_count(implode($motsJoueurs2), 'v') + substr_count(implode($motsJoueurs2), 'y');
 
-    Vous devez donc :
+    // Détermination du gagnant
+    if ($scoreJoueur1 > $scoreJoueur2) {
+        $gagnant = "Joueur 1";
+    } elseif ($scoreJoueur1 < $scoreJoueur2) {
+        $gagnant = "Joueur 2";
+    } else {
+        // En cas d'égalité, on regarde le nombre total de lettres H, R, V et Y
+        if ($nbLettresJoueur1 > $nbLettresJoueur2) {
+            $gagnant = "Joueur 1";
+        } elseif ($nbLettresJoueur1 < $nbLettresJoueur2) {
+            $gagnant = "Joueur 2";
+        } else {
+            // Si toujours égalité, on tire au hasard
+            $gagnant = pileOuFace() == "pile" ? "Joueur 1" : "Joueur 2";
+        }
+    }
 
-    D - Développer ET documenter la fonction competition, qui prend en paramètres les deux tableaux $motsJoueurs1 et $motsJoueurs2 et retourne une chaîne de caractères qui décrit le déroulement de la compétition et annonce le gagnant. Évidemment cette fonction utilise les deux autres développées précédemment.
+    // Construction de la chaîne de résultat
+    $resultat = "Le gagnant est $gagnant.\n";
+    $resultat .= "Joueur 1 a gagné $nbRondesGagneesJoueur1 rondes.\n";
+    $resultat .= "Joueur 2 a gagné $nbRondesGagneesJoueur2 rondes.\n";
+    $resultat .= "Il y a eu $nbEgalites égalité(s) de ronde.\n";
 
-
-     Donnez moi le plus de détails possibles sur le déroulement de la partie dans cette chaîne! Qui a gagné? Combien de rondes a-t-il gagné? Y'avait-t-il une égalité? Si oui, y'a-t-il eu une égalité au nombre de lettres H,R,V,Y utilisées? Si oui, qui a gagné le pile ou face? Testez tous les scénarios possibles en changeant les mots dans les tableaux $motsJoueurs1 et $motsJoueurs2 (ou encore en utilisant le même tableau deux fois...). 
-
-    */
+    return $resultat;
 
 ?>
 <h2>Le résultat de la compétition</h2>

@@ -21,6 +21,11 @@
     //function harveyScrabble($mot)
     function harveyScrabble($mot)
     {
+        // Make sure $mot is a string
+        if (!is_string($mot)) {
+            return 0;
+        }
+        
         // Remplacer les caractères accentués par leurs équivalents sans accents
         $mot = str_replace(['é', 'è', 'ê', 'à', 'â'], ['e', 'e', 'e', 'a', 'a'], $mot);
         
@@ -63,10 +68,11 @@
         
         return $score;
     }
-
+    
     /*
         B. Développez la fonction pileOuFace, qui ne reçoit aucun paramètre, mais qui retourne la chaîne "pile" ou la chaine "face", au hasard.
     */
+    
     function pileOuFace()
     {
         // Générer un nombre aléatoire entre 0 et 1
@@ -75,33 +81,47 @@
         // Retourner "pile" si le résultat est 0, sinon retourner "face"
         return $resultat === 0 ? "pile" : "face";
     }
+    
+    /*
+        C. C'est ici que vous devez développer et documenter la fonction competition.
+    */
+    function competition($joueur1, $joueur2)
+    {
+    
+        // À compléter : comparez les scores des joueurs et déterminez le gagnant
+        // et les conditions qui ont conduit à cette victoire.
+        
+        // Make sure $joueur1 and $joueur2 are strings
+        if (!is_string($joueur1) || !is_string($joueur2)) {
+            return "Les paramètres doivent être des chaînes de caractères.";
+        }
+        
+        $score_joueur1 = harveyScrabble($joueur1);
+        $score_joueur2 = harveyScrabble($joueur2);
+        
+        // Comparer les scores
+        
+        // Définition de la fonction comparerMots
+        function comparerMots($motJoueur1, $motJoueur2)
+        {
+            // La fonction comparerMots servira a comparer les mots entre chaque joueur pour definir un gagnant
+        }
 
-/*
-    C. C'est ici que vous devez développer et documenter la fonction competition.
-*/
-function competition($joueur1, $joueur2)
-{
-    // À compléter : comparez les scores des joueurs et déterminez le gagnant
-    // et les conditions qui ont conduit à cette victoire.
-    
-    $score_joueur1 = harveyScrabble($joueur1);
-    $score_joueur2 = harveyScrabble($joueur2);
-    
-    // Comparer les scores
-    if ($score_joueur1 > $score_joueur2) {
-        $gagnant = "Joueur 1";
-        $condition = "Le joueur 1 a un score de $score_joueur1 contre $score_joueur2 pour le joueur 2.";
-    } elseif ($score_joueur1 < $score_joueur2) {
-        $gagnant = "Joueur 2";
-        $condition = "Le joueur 2 a un score de $score_joueur2 contre $score_joueur1 pour le joueur 1.";
-    } else {
-        $gagnant = "Aucun";
-        $condition = "Les scores des deux joueurs sont égaux.";
+        if ($score_joueur1 > $score_joueur2) {
+            $gagnant = "Joueur 1";
+            $condition = "Le joueur 1 a un score de $score_joueur1 contre $score_joueur2 pour le joueur 2.";
+        } elseif ($score_joueur1 < $score_joueur2) {
+            $gagnant = "Joueur 2";
+            $condition = "Le joueur 2 a un score de $score_joueur2 contre $score_joueur1 pour le joueur 1.";
+        } else {
+            $gagnant = "Aucun";
+            $condition = "Les scores des deux joueurs sont égaux.";
+        }
+        
+        $chaine = "Le gagnant est $gagnant. $condition";
+        return $chaine;
     }
     
-    $chaine = "Le gagnant est $gagnant. $condition";
-    return $chaine;
-}
 
 
 ?>
