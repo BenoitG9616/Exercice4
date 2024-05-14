@@ -85,27 +85,17 @@
     /*
         C. C'est ici que vous devez développer et documenter la fonction competition.
     */
-    function competition($joueur1, $joueur2)
+    function competition($joueur1, $joueur2):string
     {
-    
+            
         // À compléter : comparez les scores des joueurs et déterminez le gagnant
         // et les conditions qui ont conduit à cette victoire.
         
-        // Make sure $joueur1 and $joueur2 are strings
-        if (!is_string($joueur1) || !is_string($joueur2)) {
-            return "Les paramètres doivent être des chaînes de caractères.";
-        }
-        
         $score_joueur1 = harveyScrabble($joueur1);
         $score_joueur2 = harveyScrabble($joueur2);
+    
         
         // Comparer les scores
-        
-        // Définition de la fonction comparerMots
-        function comparerMots($motJoueur1, $motJoueur2)
-        {
-            // La fonction comparerMots servira a comparer les mots entre chaque joueur pour definir un gagnant
-        }
 
         if ($score_joueur1 > $score_joueur2) {
             $gagnant = "Joueur 1";
@@ -120,8 +110,12 @@
         
         $chaine = "Le gagnant est $gagnant. $condition";
         return $chaine;
-    }
-    
+   }
 
-
+           // Définition de la fonction comparerMots
+function comparerMots($motJoueur1, $motJoueur2)
+{
+  // La fonction comparerMots servira a comparer les mots entre chaque joueur pour definir un gagnant
+   }
+   
 ?>

@@ -32,7 +32,7 @@
     
     */
 
-    require_once("Fonctions.php");
+    require("Fonctions.php");
     //A. Développer ET documenter la fonction harveyScrabble dans Fonctions.php selon les règles qui y sont décrites.
 
     //B. Développer ET documenter la fonction pileOuFace dans Fonctions.php selon les règles qui y sont décrites.
@@ -56,8 +56,15 @@
         <?php endforeach; ?>
         <!-- Fin -->
     </table>
+
     <h1>Test de la fonction pileOuFace</h1>
     <!-- C -- Test de la fonction pileOuFace -->
+    <?php 
+    require_once("Fonctions.php");
+    //Appeler la fonction pileOuFace et afficher le resultat
+
+    echo "Résultat de la fonction pileOuFace : " . pileOuFace();
+    ?>
 
 <h1>Deuxième partie - La Grande Compétition</h1>
 <?php 
@@ -76,26 +83,46 @@
  * @return string Le gagnant de la ronde ("Joueur 1", "Joueur 2" ou "Égalité").
  */
 // Inclure le fichier contenant la fonction competition
-require_once("Fonctions.php");
 
 // Définir les tableaux de mots pour les deux joueurs
 $motsJoueurs1 = ["Ronde1" => "hydre", "Ronde2" => "psychonévrose", "Ronde3" => "solvant", "Ronde4" => "royal"];
 $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyperémotif", "Ronde4" => "regardé"];
-
-// Appeler la fonction competition avec les tableaux de mots des deux joueurs comme paramètres
-$resultatCompetition = competition($motsJoueurs1, $motsJoueurs2);
-
-// Afficher le résultat de la compétition
-echo "<h2>Résultat de la compétition</h2>";
-echo "<pre>$resultatCompetition</pre>";
 ?>
+<h2>Les mots du premier joueur</h2>
+<table border='1'>
+    <tr>
+        <th>Ronde 1</th><th>Ronde 2</th><th>Ronde 3</th><th>Ronde 4</th>
+    </tr>
+    <tr>
+        <?php
+        // Affichage des mots du premier joueur
+        foreach ($motsJoueurs1 as $ronde => $mot) {
+            echo "<td>$mot</td>";
+        }
+        ?>
+    </tr>
+</table>
+
+<h2>Les mots du deuxième joueur</h2>
+<table border='1'>
+    <tr>
+        <th>Ronde 1</th><th>Ronde 2</th><th>Ronde 3</th><th>Ronde 4</th>
+    </tr>
+    <tr>
+        <?php
+        // Affichage des mots du deuxième joueur
+        foreach ($motsJoueurs2 as $ronde => $mot) {
+            echo "<td>$mot</td>";
+        }
+        ?>
+    </tr>
+</table>
 
 <?php
-require_once("Fonctions.php");
- //Détermine le gagnant de la compétition entre deux joueurs.
- //@param array $motsJoueurs1 Les mots soumis par le joueur 1.
- //@param array $motsJoueurs2 Les mots soumis par le joueur 2.
- //@return string La description du déroulement de la compétition et le nom du gagnant.
+ // Détermine le gagnant de la compétition entre deux joueurs.
+ // @param array $motsJoueurs1 Les mots soumis par le joueur 1.
+ // @param array $motsJoueurs2 Les mots soumis par le joueur 2.
+ // @return string La description du déroulement de la compétition et le nom du gagnant.
 
  // Initialisation des compteurs
     $scoreJoueur1 = 0;
@@ -106,7 +133,7 @@ require_once("Fonctions.php");
 
     // Comparaison des mots pour chaque ronde
     foreach ($motsJoueurs1 as $ronde => $motJoueur1) {
-        $motJoueur2 = $motsJoueurs2[$ronde];
+            $motJoueur2 = $motsJoueurs2[$ronde];
     
         $gagnantRonde = comparerMots($motJoueur1, $motJoueur2);
         if ($gagnantRonde == "Joueur 1") {
@@ -143,9 +170,9 @@ require_once("Fonctions.php");
 
     // Construction de la chaîne de résultat
     $resultat = "Le gagnant est $gagnant.\n";
-    $resultat .= "Joueur 1 a gagné $nbRondesGagneesJoueur1 rondes.\n";
-    $resultat .= "Joueur 2 a gagné $nbRondesGagneesJoueur2 rondes.\n";
-    $resultat .= "Il y a eu $nbEgalites égalité(s) de ronde.\n";
+    $resultat = "Joueur 1 a gagné $nbRondesGagneesJoueur1 rondes.\n";
+    $resultat = "Joueur 2 a gagné $nbRondesGagneesJoueur2 rondes.\n";
+    $resultat = "Il y a eu $nbEgalites égalité(s) de ronde.\n";
 
     return $resultat;
 
