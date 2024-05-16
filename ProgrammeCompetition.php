@@ -123,8 +123,9 @@ $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyper
  // @param array $motsJoueurs1 Les mots soumis par le joueur 1.
  // @param array $motsJoueurs2 Les mots soumis par le joueur 2.
  // @return string La description du déroulement de la compétition et le nom du gagnant.
-
- // Initialisation des compteurs
+require_once("Fonctions.php");
+ function competition($Joueurs1, $motsJoueurs2); {
+    // Initialisation des compteurs
     $scoreJoueur1 = 0;
     $scoreJoueur2 = 0;
     $nbRondesGagneesJoueur1 = 0;
@@ -133,8 +134,8 @@ $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyper
 
     // Comparaison des mots pour chaque ronde
     foreach ($motsJoueurs1 as $ronde => $motJoueur1) {
-            $motJoueur2 = $motsJoueurs2[$ronde];
-    
+        $motJoueur2 = $motsJoueurs2[$ronde];
+
         $gagnantRonde = comparerMots($motJoueur1, $motJoueur2);
         if ($gagnantRonde == "Joueur 1") {
             $scoreJoueur1++;
@@ -170,12 +171,12 @@ $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyper
 
     // Construction de la chaîne de résultat
     $resultat = "Le gagnant est $gagnant.\n";
-    $resultat = "Joueur 1 a gagné $nbRondesGagneesJoueur1 rondes.\n";
-    $resultat = "Joueur 2 a gagné $nbRondesGagneesJoueur2 rondes.\n";
-    $resultat = "Il y a eu $nbEgalites égalité(s) de ronde.\n";
+    $resultat .= "Joueur 1 a gagné $nbRondesGagneesJoueur1 rondes.\n";
+    $resultat .= "Joueur 2 a gagné $nbRondesGagneesJoueur2 rondes.\n";
+    $resultat .= "Il y a eu $nbEgalites égalité(s) de ronde.\n";
 
     return $resultat;
-
+}
 ?>
 <h2>Le résultat de la compétition</h2>
 <?php 
