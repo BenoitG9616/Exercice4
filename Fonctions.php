@@ -87,7 +87,7 @@
     */
     function competition($joueur1, $joueur2):string
     {
-            
+    
         // À compléter : comparez les scores des joueurs et déterminez le gagnant
         // et les conditions qui ont conduit à cette victoire.
         
@@ -104,13 +104,20 @@
             $gagnant = "Joueur 2";
             $condition = "Le joueur 2 a un score de $score_joueur2 contre $score_joueur1 pour le joueur 1.";
         } else {
-            $gagnant = "Aucun";
-            $condition = "Les scores des deux joueurs sont égaux.";
+            // En cas d'égalité des scores, on utilise la fonction pile ou face
+            $tirage = pileOuFace();
+            if ($tirage === "pile") {
+                $gagnant = "Joueur 1";
+                $condition = "Les scores des deux joueurs sont égaux, tirage au sort: pile.";
+            } else {
+                $gagnant = "Joueur 2";
+                $condition = "Les scores des deux joueurs sont égaux, tirage au sort: face.";
+            }
         }
-        
+    }
         $chaine = "Le gagnant est $gagnant. $condition";
         return $chaine;
-   }
+        
 
            // Définition de la fonction comparerMots
 function comparerMots($motJoueur1, $motJoueur2)

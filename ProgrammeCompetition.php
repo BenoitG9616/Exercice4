@@ -124,17 +124,16 @@ $motsJoueurs2 = ["Ronde1" => "cheval", "Ronde2" => "voyelle", "Ronde3" => "hyper
  // @param array $motsJoueurs2 Les mots soumis par le joueur 2.
  // @return string La description du déroulement de la compétition et le nom du gagnant.
 require_once("Fonctions.php");
- function competition($Joueurs1, $motsJoueurs2); {
-    // Initialisation des compteurs
-    $scoreJoueur1 = 0;
-    $scoreJoueur2 = 0;
-    $nbRondesGagneesJoueur1 = 0;
-    $nbRondesGagneesJoueur2 = 0;
-    $nbEgalites = 0;
-
+ echo competition($motsJoueurs1, $motsJoueurs2); 
+    {
+        $scoreJoueur1 = 0;
+        $scoreJoueur2 = 0;
+        $nbRondesGagneesJoueur1 = 0;
+        $nbRondesGagneesJoueur2 = 0;
+        $nbEgalites = 0;
+        
     // Comparaison des mots pour chaque ronde
-    foreach ($motsJoueurs1 as $ronde => $motJoueur1) {
-        $motJoueur2 = $motsJoueurs2[$ronde];
+    foreach ($motsJoueurs1 as $ronde => $motJoueur1) ($motJoueur2 = $motsJoueurs2[$ronde]);
 
         $gagnantRonde = comparerMots($motJoueur1, $motJoueur2);
         if ($gagnantRonde == "Joueur 1") {
@@ -165,7 +164,7 @@ require_once("Fonctions.php");
             $gagnant = "Joueur 2";
         } else {
             // Si toujours égalité, on tire au hasard
-            $gagnant = pileOuFace() == "pile" ? "Joueur 1" : "Joueur 2";
+            $gagnant = rand(0, 1) === 0 ? "pile" : "face";
         }
     }
 
@@ -176,7 +175,6 @@ require_once("Fonctions.php");
     $resultat .= "Il y a eu $nbEgalites égalité(s) de ronde.\n";
 
     return $resultat;
-}
 ?>
 <h2>Le résultat de la compétition</h2>
 <?php 
